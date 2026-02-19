@@ -1,0 +1,25 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add contact button with email mailto link",
+  "requirements": [
+    {
+      "id": "REQ-12",
+      "summary": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com",
+      "acceptanceCriteria": [
+        "A contact button is visible on the landing page",
+        "Clicking the button opens the user's default email client with 'To:' field pre-filled with viitjeetec@gmail.com",
+        "The button uses a mailto: link (e.g., mailto:viitjeetec@gmail.com)",
+        "Button styling is consistent with the existing warm orange theme and UI design",
+        "Button includes appropriate accessible label text in English (e.g., 'Contact Us' or 'Get in Touch')"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add a 'Contact Us' button with mailto:viitjeetec@gmail.com link positioned in a visible location (header navigation or footer/about section). Use consistent warm orange theme styling (bg-primary, hover states) and ensure accessible label text. The button should integrate naturally with the existing landing page layout without disrupting current content."
+        }
+      ]
+    }
+  ]
+}

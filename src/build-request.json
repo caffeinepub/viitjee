@@ -1,0 +1,44 @@
+{
+  "kind": "build_request",
+  "title": "Add contact button with email mailto link",
+  "projectName": "viitjee",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-12",
+      "text": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com when clicked, positioned in a visible location such as the header navigation area or the About/footer section of the landing page",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-add-email-in-contact-button",
+          "msg-user-viitjeetec-gmail"
+        ],
+        "quotes": [
+          "add email in contact button",
+          "viitjeetec@gmail.com"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A contact button is visible on the landing page",
+        "Clicking the button opens the user's default email client with 'To:' field pre-filled with viitjeetec@gmail.com",
+        "The button uses a mailto: link (e.g., mailto:viitjeetec@gmail.com)",
+        "Button styling is consistent with the existing warm orange theme and UI design",
+        "Button includes appropriate accessible label text in English (e.g., 'Contact Us' or 'Get in Touch')"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not implement email-sending functionality (server-side email) as it requires a paid subscription",
+    "Use only client-side mailto: links to open the user's email application",
+    "Maintain consistency with the existing viitjee branding and warm orange visual theme"
+  ],
+  "nonGoals": [
+    "Building a contact form that sends emails through the backend",
+    "Implementing newsletter signup or email verification features",
+    "Adding email validation or storage in the backend"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

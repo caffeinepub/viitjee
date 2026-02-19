@@ -1,0 +1,23 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-a-contact-us-button-in-the-frontend-that-opens-a-mailto-link-to-viitjeetec-gmail-com-when-clicked-positioned-in-a-visible-location-such-as-the-header-navigation-area-or-the-about-footer-section-of-the-landing-page",
+      "featureTitle": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com when clicked, positioned in a visible location such as the header navigation area or the About/footer section of the landing page",
+      "files": [
+        "frontend/src/App.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

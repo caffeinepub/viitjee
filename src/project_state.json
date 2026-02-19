@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 13,
+  "summary": "Educational app project named \"viitjee\" by Venkatesh.",
+  "architectural_notes": [],
+  "known_issues": [
+    "App generation/build may intermittently fail on the server (timeout/interruption) and require a retry."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-set-up-the-core-frontend-branding-for-the-educational-app-with-the-name-viitjee-and-author-attribution-by-venkatesh-in-all-visible-brand-locations-app-header-home-hero-section-and-in-the-browser-document-title-metadata",
+      "title": "Set up the core frontend branding for the educational app with the name \"viitjee\" and author attribution \"by Venkatesh\" in all visible brand locations (app header, home hero section) and in the browser document title/metadata.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-simple-coherent-educational-app-landing-experience-with-these-sections-hero-brand-one-sentence-tagline-featured-topics-courses-static-placeholder-cards-and-about-short-description-of-the-app-all-user-facing-text-must-be-in-english",
+      "title": "Create a simple, coherent educational-app landing experience with these sections: Hero (brand + one-sentence tagline), Featured Topics/Courses (static placeholder cards), and About (short description of the app). All user-facing text must be in English.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-distinctive-consistent-visual-theme-for-the-app-ui-color-palette-typography-spacing-component-styling-suitable-for-an-educational-product-avoid-a-blue-purple-primary-palette",
+      "title": "Apply a distinctive, consistent visual theme for the app UI (color palette, typography, spacing, component styling) suitable for an educational product. Avoid a blue/purple primary palette.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-required-generated-images-to-the-frontend-as-static-assets-under-frontend-public-assets-generated-and-render-them-on-the-home-page-logo-in-header-hero-illustration-in-hero-section",
+      "title": "Add the required generated images to the frontend as static assets under \"frontend/public/assets/generated\" and render them on the home page (logo in header, hero illustration in hero section).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-regenerate-the-project-from-the-injected-react-motoko-template-so-the-application-builds-and-runs-successfully-end-to-end-including-the-existing-viitjee-branding-landing-page-sections-visual-theme-non-blue-purple-primary-and-static-generated-image-rendering-already-specified-in-existing-features",
+      "title": "Regenerate the project from the injected React+Motoko template so the application builds and runs successfully end-to-end, including the existing viitjee branding, landing page sections, visual theme (non blue/purple primary), and static generated image rendering already specified in existing features.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-a-new-viitjee-logo-image-asset-and-add-it-to-the-frontend-as-a-static-file-under-frontend-public-assets-generated",
+      "title": "Generate a new viitjee logo image asset and add it to the frontend as a static file under \"frontend/public/assets/generated\".",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-placeholder-v-lettermark-in-the-header-and-footer-with-the-generated-viitjee-logo-image-keeping-the-existing-brand-text-viitjee-and-by-venkatesh-unchanged",
+      "title": "Replace the current placeholder \"V\" lettermark in the header and footer with the generated viitjee logo image, keeping the existing brand text \"viitjee\" and \"by Venkatesh\" unchanged.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-new-static-subject-tab-images-for-mathematics-physics-and-chemistry-under-frontend-public-assets-generated-using-the-filenames-specified-in-this-build-request",
+      "title": "Add new static subject tab images for Mathematics, Physics, and Chemistry under \"frontend/public/assets/generated\" using the filenames specified in this build request.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-courses-featured-courses-ui-to-display-the-corresponding-subject-tab-image-next-to-each-course-subject-physics-chemistry-mathematics-using-the-new-static-assets-with-appropriate-alt-text-in-english",
+      "title": "Update the Courses/Featured Courses UI to display the corresponding subject tab image next to each course subject (Physics, Chemistry, Mathematics) using the new static assets, with appropriate alt text in English.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-three-new-static-subject-header-images-physics-chemistry-mathematics-under-frontend-public-assets-generated-and-use-them-to-visually-fill-the-top-header-band-of-each-featured-courses-card-the-current-colored-gradient-area-matching-the-intent-shown-in-the-uploaded-screenshot-images-applied-to-the-top-colored-strip-of-each-subject-card",
+      "title": "Add three new static subject header images (Physics, Chemistry, Mathematics) under \"frontend/public/assets/generated\" and use them to visually fill the top header band of each Featured Courses card (the current colored/gradient area), matching the intent shown in the uploaded screenshot (images applied to the top colored strip of each subject card).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-featured-courses-ui-in-frontend-src-app-tsx-so-that-the-course-header-visuals-the-top-band-of-each-card-can-be-driven-by-per-subject-image-assets-while-preserving-the-existing-subject-icon-next-to-the-subject-title-physics-chemistry-mathematics",
+      "title": "Update the Featured Courses UI in \"frontend/src/App.tsx\" so that the course header visuals (the top band of each card) can be driven by per-subject image assets while preserving the existing subject icon next to the subject title (Physics/Chemistry/Mathematics).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-contact-us-button-in-the-frontend-that-opens-a-mailto-link-to-viitjeetec-gmail-com-when-clicked-positioned-in-a-visible-location-such-as-the-header-navigation-area-or-the-about-footer-section-of-the-landing-page",
+      "title": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com when clicked, positioned in a visible location such as the header navigation area or the About/footer section of the landing page",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create an educational app named \"viitjee\" (by Venkatesh).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Select/provide a logo image for the viitjee app (and related images as needed) to use in the UI.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Provide subject tab images/icons for Math, Physics, and Chemistry to use in the app UI.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add images to the Featured Courses/subject cards (replace or augment the colored subject sections with images).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add contact button with email address (viitjeetec@gmail.com) that opens mailto link",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "viitjee",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
