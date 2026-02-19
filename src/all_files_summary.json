@@ -1,15 +1,15 @@
 {
-  "backend/main.mo": "Motoko actor with a single public query function `greet` that takes a name parameter and returns a greeting string.",
-  "feature_evidence.json": "Feature evidence report documenting the implementation of a 'Contact Us' button with mailto link to viitjeetec@gmail.com in the frontend header and footer.",
-  "frontend-file-summaries.txt": "JSON-formatted summaries of frontend files including App.tsx (landing page with Contact Us button), index.css (OKLCH color system), tailwind.config.js (Tailwind theme configuration), and useQueries.ts (React Query hooks).",
-  "frontend/index.css": "Tailwind CSS configuration with OKLCH color variables for light and dark modes using grayscale colors (no warm orange theme present in this file).",
+  "backend/main.mo": "Motoko actor defining a single public query function 'greet' that takes a name parameter and returns a greeting string.",
+  "feature_evidence.json": "Feature evidence report documenting the Contact Us button implementation in App.tsx with mailto link to viitjeetec@gmail.com, marked as high confidence.",
+  "frontend-file-summaries.txt": "JSON-formatted summaries of frontend files describing the main App component, global styles with OKLCH colors, Tailwind config, and React Query hooks.",
+  "frontend/index.css": "Tailwind CSS base styles with CSS custom properties defining OKLCH color tokens for light and dark themes using neutral grayscale values.",
   "frontend/index.html": "HTML entry point for the viitjee application with root div and module script reference to main.tsx.",
-  "frontend/src/App.tsx": "Main React component rendering the viitjee educational platform landing page with hero section, features, courses (Physics, Chemistry, Mathematics with icons and headers), about section, footer, and Contact Us buttons in header and footer linking to viitjeetec@gmail.com.",
-  "frontend/src/hooks/useActor.ts": "React hook that creates and manages the backend actor instance with Internet Identity authentication support, invalidating dependent queries when the actor changes.",
-  "frontend/src/hooks/useInternetIdentity.ts": "React context provider and hook for Internet Identity authentication, managing login state, identity storage, and AuthClient lifecycle with configurable options.",
-  "frontend/src/hooks/useQueries.ts": "Custom React Query hook `useGreeting` that fetches a greeting from the backend actor for a given name.",
-  "frontend/src/index.css": "Tailwind CSS base styles with OKLCH color system using warm orange primary colors for light and dark modes, plus typography and font feature settings.",
-  "frontend/src/main.tsx": "React application entry point that sets up QueryClient, InternetIdentityProvider, and renders the App component.",
-  "frontend/tailwind.config.js": "Tailwind configuration extending the theme with OKLCH color tokens, custom border radius, shadows, Inter font family, and accordion animation keyframes.",
-  "project_state.json": "Project state file tracking the \"viitjee\" educational app with 13 features including branding, landing page, visual theme (non-blue/purple), logo integration, and navigation. Known issue: intermittent build timeouts requiring retry."
+  "frontend/src/App.tsx": "Main React component rendering the viitjee educational platform landing page with header navigation, hero section, features, courses, about section, and footer including mailto links to viitjeetec@gmail.com.",
+  "frontend/src/hooks/useActor.ts": "React hook managing ICP backend actor creation with Internet Identity authentication, invalidating dependent queries when actor changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "React context provider and hook for Internet Identity authentication, managing login state, identity storage, and AuthClient lifecycle.",
+  "frontend/src/hooks/useQueries.ts": "React Query hook 'useGreeting' that fetches a greeting from the backend actor using the provided name parameter.",
+  "frontend/src/index.css": "Tailwind CSS base styles with OKLCH color system using warm orange primary colors for light and dark modes, plus typography and font settings.",
+  "frontend/src/main.tsx": "React application entry point setting up QueryClient, InternetIdentityProvider, and rendering the App component.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending theme with OKLCH color tokens, custom border radius, shadows, Inter font family, and accordion animations.",
+  "project_state.json": "Project state tracking file for \"viitjee\" educational app by Venkatesh, documenting 15 existing features (branding, landing page, visual theme, course/quiz functionality, contact form) and 2 known issues (build timeouts, mailto link not working). Currently marked as a fix request with architectural notes about React frontend, Motoko backend, and ICP deployment."
 }

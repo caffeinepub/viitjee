@@ -1,23 +1,22 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add contact button with email mailto link",
+  "title": "Fix Contact Us mailto link to display email address",
   "requirements": [
     {
-      "id": "REQ-12",
-      "summary": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com",
+      "id": "REQ-13",
+      "summary": "Update Contact Us button mailto links in header and footer to properly open email client with viitjeetec@gmail.com",
       "acceptanceCriteria": [
-        "A contact button is visible on the landing page",
-        "Clicking the button opens the user's default email client with 'To:' field pre-filled with viitjeetec@gmail.com",
-        "The button uses a mailto: link (e.g., mailto:viitjeetec@gmail.com)",
-        "Button styling is consistent with the existing warm orange theme and UI design",
-        "Button includes appropriate accessible label text in English (e.g., 'Contact Us' or 'Get in Touch')"
+        "Clicking the Contact Us button in the header opens the default email client",
+        "Clicking the Contact Us button in the footer opens the default email client",
+        "Both mailto links pre-populate the To field with viitjeetec@gmail.com",
+        "The mailto link is properly formatted as href=\"mailto:viitjeetec@gmail.com\""
       ],
       "file_operations": [
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Add a 'Contact Us' button with mailto:viitjeetec@gmail.com link positioned in a visible location (header navigation or footer/about section). Use consistent warm orange theme styling (bg-primary, hover states) and ensure accessible label text. The button should integrate naturally with the existing landing page layout without disrupting current content."
+          "description": "Fix the Contact Us button implementation by ensuring both header and footer buttons use properly formatted mailto links. Replace any incorrect link implementations with <a href=\"mailto:viitjeetec@gmail.com\"> wrapped around the Contact Us button elements. Ensure the mailto protocol is correctly specified so clicking the buttons opens the user's default email client with viitjeetec@gmail.com pre-populated in the To field. Preserve existing button styling and warm orange theme colors."
         }
       ]
     }

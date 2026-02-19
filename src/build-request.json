@@ -1,41 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Add contact button with email mailto link",
+  "title": "Fix Contact Us mailto link to display email address",
   "projectName": "viitjee",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-12",
-      "text": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com when clicked, positioned in a visible location such as the header navigation area or the About/footer section of the landing page",
+      "id": "REQ-13",
+      "text": "Update the Contact Us button implementation in frontend/src/App.tsx so that clicking it properly opens the user's default email client with viitjeetec@gmail.com as the recipient address, ensuring the mailto link is correctly formatted and functional",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-add-email-in-contact-button",
-          "msg-user-viitjeetec-gmail"
+          "msg-user-final"
         ],
         "quotes": [
-          "add email in contact button",
-          "viitjeetec@gmail.com"
+          "It is not showing email"
         ]
       },
       "acceptanceCriteria": [
-        "A contact button is visible on the landing page",
-        "Clicking the button opens the user's default email client with 'To:' field pre-filled with viitjeetec@gmail.com",
-        "The button uses a mailto: link (e.g., mailto:viitjeetec@gmail.com)",
-        "Button styling is consistent with the existing warm orange theme and UI design",
-        "Button includes appropriate accessible label text in English (e.g., 'Contact Us' or 'Get in Touch')"
+        "Clicking the Contact Us button in the header opens the default email client",
+        "Clicking the Contact Us button in the footer opens the default email client",
+        "Both mailto links pre-populate the To field with viitjeetec@gmail.com",
+        "The mailto link is properly formatted as href=\"mailto:viitjeetec@gmail.com\""
       ]
     }
   ],
   "constraints": [
-    "Do not implement email-sending functionality (server-side email) as it requires a paid subscription",
-    "Use only client-side mailto: links to open the user's email application",
-    "Maintain consistency with the existing viitjee branding and warm orange visual theme"
+    "Preserve the existing Contact Us button placement in both header and footer",
+    "Keep the button styling consistent with the current warm orange theme",
+    "Do not modify backend files"
   ],
   "nonGoals": [
-    "Building a contact form that sends emails through the backend",
-    "Implementing newsletter signup or email verification features",
-    "Adding email validation or storage in the backend"
+    "Adding additional contact methods beyond email",
+    "Creating a contact form",
+    "Changing the email address from viitjeetec@gmail.com"
   ],
   "imageRequirements": {
     "required": [],

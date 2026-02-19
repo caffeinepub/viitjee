@@ -1,12 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
+  "projectStateVersion": 15,
   "summary": "Educational app project named \"viitjee\" by Venkatesh.",
   "architectural_notes": [],
   "known_issues": [
-    "App generation/build may intermittently fail on the server (timeout/interruption) and require a retry."
+    "App generation/build may intermittently fail on the server (timeout/interruption) and require a retry.",
+    "Contact button mailto link not displaying/working correctly in the deployed app"
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-set-up-the-core-frontend-branding-for-the-educational-app-with-the-name-viitjee-and-author-attribution-by-venkatesh-in-all-visible-brand-locations-app-header-home-hero-section-and-in-the-browser-document-title-metadata",
@@ -101,6 +102,14 @@
       "title": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com when clicked, positioned in a visible location such as the header navigation area or the About/footer section of the landing page",
       "reqIds": [
         "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-contact-us-button-implementation-in-frontend-src-app-tsx-so-that-clicking-it-properly-opens-the-user-s-default-email-client-with-viitjeetec-gmail-com-as-the-recipient-address-ensuring-the-mailto-link-is-correctly-formatted-and-functional",
+      "title": "Update the Contact Us button implementation in frontend/src/App.tsx so that clicking it properly opens the user's default email client with viitjeetec@gmail.com as the recipient address, ensuring the mailto link is correctly formatted and functional",
+      "reqIds": [
+        "REQ-13"
       ],
       "version": 1
     }

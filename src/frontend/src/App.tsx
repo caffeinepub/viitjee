@@ -76,12 +76,10 @@ function App() {
             <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
               About
             </a>
-            <Button size="sm" variant="outline" asChild>
-              <a href="mailto:viitjeetec@gmail.com" className="gap-2">
-                <Mail className="w-4 h-4" />
-                Contact Us
-              </a>
-            </Button>
+            <a href="mailto:viitjeetec@gmail.com" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+              <Mail className="w-4 h-4" />
+              viitjeetec@gmail.com
+            </a>
             <Button size="sm">Get Started</Button>
           </nav>
         </div>
@@ -338,20 +336,17 @@ function App() {
               </ul>
             </div>
             <div>
-              <h5 className="font-semibold mb-4">Company</h5>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">About Us</a></li>
-                <li>
-                  <a 
-                    href="mailto:viitjeetec@gmail.com" 
-                    className="hover:text-foreground transition-colors flex items-center gap-1"
-                  >
-                    <Mail className="w-3 h-3" />
-                    Contact
-                  </a>
-                </li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a></li>
-              </ul>
+              <h5 className="font-semibold mb-4">Contact</h5>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>Get in touch with us:</p>
+                <a 
+                  href="mailto:viitjeetec@gmail.com" 
+                  className="hover:text-foreground transition-colors flex items-center gap-2 font-medium"
+                >
+                  <Mail className="w-4 h-4" />
+                  viitjeetec@gmail.com
+                </a>
+              </div>
             </div>
           </div>
           <Separator className="my-8" />

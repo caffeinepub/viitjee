@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-contact-us-button-in-the-frontend-that-opens-a-mailto-link-to-viitjeetec-gmail-com-when-clicked-positioned-in-a-visible-location-such-as-the-header-navigation-area-or-the-about-footer-section-of-the-landing-page",
-      "featureTitle": "Add a 'Contact Us' button in the frontend that opens a mailto link to viitjeetec@gmail.com when clicked, positioned in a visible location such as the header navigation area or the About/footer section of the landing page",
+      "featureId": "feature-update-the-contact-us-button-implementation-in-frontend-src-app-tsx-so-that-clicking-it-properly-opens-the-user-s-default-email-client-with-viitjeetec-gmail-com-as-the-recipient-address-ensuring-the-mailto-link-is-correctly-formatted-and-functional",
+      "featureTitle": "Update the Contact Us button implementation in frontend/src/App.tsx so that clicking it properly opens the user's default email client with viitjeetec@gmail.com as the recipient address, ensuring the mailto link is correctly formatted and functional",
       "files": [
         "frontend/src/App.tsx"
       ],
@@ -15,7 +15,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-12"
+        "REQ-13"
       ],
       "confidence": "high"
     }

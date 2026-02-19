@@ -1,5 +1,5 @@
 {
-  "frontend/src/App.tsx": "Main application component rendering the viitjee educational platform landing page with hero section, features, courses (displaying subject header images and icons), about section, and footer; now includes a \"Contact Us\" button with mailto link to viitjeetec@gmail.com in both the header navigation and footer.",
+  "frontend/src/App.tsx": "Main application component rendering the viitjee educational platform landing page with hero section, features, courses, about section, and footer; displays the email address viitjeetec@gmail.com visibly in both the header navigation and footer contact section with clickable mailto links.",
   "frontend/src/index.css": "Global styles with OKLCH color system using warm orange primary colors (avoiding blue/purple) for light and dark modes, with typography and base styling.",
   "frontend/tailwind.config.js": "Tailwind configuration extending the theme with OKLCH color tokens, custom border radius, shadows, Inter font family, and animation keyframes.",
   "frontend/src/hooks/useQueries.ts": "React Query hooks for backend data fetching, currently implementing a greeting query to test backend connectivity."
