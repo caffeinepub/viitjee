@@ -1,54 +1,206 @@
-import { useActor } from './hooks/useActor';
-import { useQuery } from '@tanstack/react-query';
-import { Button } from './components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
-import { Separator } from './components/ui/separator';
-import { BookOpen, Target, TrendingUp, Users, Award, Zap, Heart, Mail } from 'lucide-react';
+import { useQuery } from "@tanstack/react-query";
+import {
+  Award,
+  BookOpen,
+  CheckCircle2,
+  Heart,
+  Mail,
+  Target,
+  TrendingUp,
+  Users,
+  X,
+  Zap,
+} from "lucide-react";
+import { useState } from "react";
+import { Button } from "./components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "./components/ui/dialog";
+import { ScrollArea } from "./components/ui/scroll-area";
+import { Separator } from "./components/ui/separator";
+import { useActor } from "./hooks/useActor";
+
+const stats = [
+  { icon: Users, label: "Active Students", value: "10,000+" },
+  { icon: BookOpen, label: "Video Lectures", value: "5,000+" },
+  { icon: Target, label: "Practice Problems", value: "50,000+" },
+  { icon: Award, label: "Success Rate", value: "95%" },
+];
+
+const features = [
+  {
+    icon: BookOpen,
+    title: "Comprehensive Content",
+    description:
+      "Complete syllabus coverage for JEE Main and Advanced with detailed explanations and examples.",
+  },
+  {
+    icon: Target,
+    title: "Targeted Practice",
+    description:
+      "Topic-wise and difficulty-level practice problems to strengthen your concepts.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Progress Tracking",
+    description:
+      "Monitor your performance with detailed analytics and personalized recommendations.",
+  },
+  {
+    icon: Users,
+    title: "Expert Faculty",
+    description:
+      "Learn from experienced teachers with proven track records in JEE coaching.",
+  },
+  {
+    icon: Award,
+    title: "Mock Tests",
+    description:
+      "Full-length mock tests simulating actual JEE exam patterns and difficulty.",
+  },
+  {
+    icon: Zap,
+    title: "Doubt Resolution",
+    description:
+      "Quick doubt clearing sessions to ensure no concept is left unclear.",
+  },
+];
+
+const courses = [
+  {
+    subject: "Physics",
+    topics: "Mechanics, Thermodynamics, Electromagnetism",
+    lessons: "150+ Lessons",
+  },
+  {
+    subject: "Chemistry",
+    topics: "Physical, Organic, Inorganic Chemistry",
+    lessons: "140+ Lessons",
+  },
+  {
+    subject: "Mathematics",
+    topics: "Calculus, Algebra, Coordinate Geometry",
+    lessons: "160+ Lessons",
+  },
+];
+
+const syllabusData: Record<string, string[]> = {
+  Physics: [
+    "Units & Measurements",
+    "Kinematics",
+    "Laws of Motion",
+    "Work, Energy & Power",
+    "Rotational Motion",
+    "Gravitation",
+    "Properties of Matter",
+    "Thermodynamics",
+    "Oscillations & Waves",
+    "Electrostatics",
+    "Current Electricity",
+    "Magnetic Effects of Current",
+    "Electromagnetic Induction",
+    "Optics",
+    "Modern Physics",
+  ],
+  Chemistry: [
+    "Some Basic Concepts of Chemistry",
+    "Structure of Atom",
+    "Chemical Bonding",
+    "States of Matter",
+    "Thermodynamics",
+    "Equilibrium",
+    "Redox Reactions",
+    "Hydrogen & s-Block Elements",
+    "p-Block Elements",
+    "d and f-Block Elements",
+    "Coordination Compounds",
+    "Organic Chemistry Basics",
+    "Hydrocarbons",
+    "Alcohols, Phenols & Ethers",
+    "Aldehydes, Ketones & Carboxylic Acids",
+    "Amines",
+    "Biomolecules & Polymers",
+  ],
+  Mathematics: [
+    "Sets, Relations & Functions",
+    "Complex Numbers",
+    "Sequences & Series",
+    "Quadratic Equations",
+    "Permutations & Combinations",
+    "Binomial Theorem",
+    "Matrices & Determinants",
+    "Limits, Continuity & Differentiability",
+    "Application of Derivatives",
+    "Integrals",
+    "Differential Equations",
+    "Coordinate Geometry (Straight Lines, Circles, Conics)",
+    "3D Geometry",
+    "Vectors",
+    "Statistics & Probability",
+    "Trigonometry",
+  ],
+};
+
+const subjectColors: Record<string, string> = {
+  Physics: "from-blue-500/20 to-cyan-500/20",
+  Chemistry: "from-green-500/20 to-emerald-500/20",
+  Mathematics: "from-purple-500/20 to-violet-500/20",
+};
 
 function App() {
   const { actor, isFetching } = useActor();
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
-  // Test backend connectivity
   const { data: greeting } = useQuery({
-    queryKey: ['greeting'],
+    queryKey: ["greeting"],
     queryFn: async () => {
       if (!actor) return null;
-      return actor.greet('viitjee student');
+      return actor.greet("viitjee student");
     },
     enabled: !!actor && !isFetching,
   });
 
-  // Subject icon mapping
   const subjectIcons: Record<string, { path: string; alt: string }> = {
     Physics: {
-      path: '/assets/generated/physics-tab-icon.dim_256x256.png',
-      alt: 'Physics icon',
+      path: "/assets/generated/physics-tab-icon.dim_256x256.png",
+      alt: "Physics icon",
     },
     Chemistry: {
-      path: '/assets/generated/chemistry-tab-icon.dim_256x256.png',
-      alt: 'Chemistry icon',
+      path: "/assets/generated/chemistry-tab-icon.dim_256x256.png",
+      alt: "Chemistry icon",
     },
     Mathematics: {
-      path: '/assets/generated/math-tab-icon.dim_256x256.png',
-      alt: 'Mathematics icon',
+      path: "/assets/generated/math-tab-icon.dim_256x256.png",
+      alt: "Mathematics icon",
     },
   };
 
-  // Subject header image mapping
   const subjectHeaderImages: Record<string, { path: string; alt: string }> = {
     Physics: {
-      path: '/assets/generated/physics-course-header.dim_1200x400.png',
-      alt: 'Physics course header',
+      path: "/assets/generated/physics-course-header.dim_800x300.jpg",
+      alt: "Physics course header",
     },
     Chemistry: {
-      path: '/assets/generated/chemistry-course-header.dim_1200x400.png',
-      alt: 'Chemistry course header',
+      path: "/assets/generated/chemistry-course-header.dim_800x300.jpg",
+      alt: "Chemistry course header",
     },
     Mathematics: {
-      path: '/assets/generated/math-course-header.dim_1200x400.png',
-      alt: 'Mathematics course header',
+      path: "/assets/generated/math-course-header.dim_800x300.jpg",
+      alt: "Mathematics course header",
     },
   };
+
+  const selectedChapters = selectedCourse ? syllabusData[selectedCourse] : [];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -56,31 +208,51 @@ function App() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <img 
-              src="/assets/generated/viitjee-logo.dim_256x256.png" 
-              alt="viitjee logo" 
-              className="w-10 h-10 object-contain"
+            <img
+              src="/assets/generated/viitjee-logo.dim_400x120.png"
+              alt="Viit-Jee logo"
+              className="h-8 w-auto object-contain"
             />
             <div>
-              <h1 className="text-xl font-bold tracking-tight">viitjee</h1>
-              <p className="text-xs text-muted-foreground">by Venkatesh</p>
+              <h1 className="text-xl font-bold tracking-tight">VIIT JEE</h1>
+              <p className="text-xs text-muted-foreground">
+                BY VENKATESH KOMIRISETTY
+              </p>
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+            <a
+              href="#features"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              data-ocid="nav.features.link"
+            >
               Features
             </a>
-            <a href="#courses" className="text-sm font-medium hover:text-primary transition-colors">
+            <a
+              href="#courses"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              data-ocid="nav.courses.link"
+            >
               Courses
             </a>
-            <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
+            <a
+              href="#about"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              data-ocid="nav.about.link"
+            >
               About
             </a>
-            <a href="mailto:viitjeetec@gmail.com" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+            <a
+              href="mailto:viitjeetec@gmail.com"
+              className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1"
+              data-ocid="nav.contact.link"
+            >
               <Mail className="w-4 h-4" />
               viitjeetec@gmail.com
             </a>
-            <Button size="sm">Get Started</Button>
+            <Button size="sm" data-ocid="nav.get_started.button">
+              Get Started
+            </Button>
           </nav>
         </div>
       </header>
@@ -99,14 +271,24 @@ function App() {
                 <span className="block text-primary mt-2">Expert Guidance</span>
               </h2>
               <p className="text-lg text-muted-foreground max-w-xl">
-                Comprehensive preparation platform for JEE Main and Advanced. Learn from structured courses, practice with thousands of problems, and track your progress.
+                Comprehensive preparation platform for JEE Main and Advanced.
+                Learn from structured courses, practice with thousands of
+                problems, and track your progress.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="gap-2">
+                <Button
+                  size="lg"
+                  className="gap-2"
+                  data-ocid="hero.start_learning.button"
+                >
                   <Zap className="w-4 h-4" />
                   Start Learning
                 </Button>
-                <Button size="lg" variant="outline">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  data-ocid="hero.explore_courses.button"
+                >
                   Explore Courses
                 </Button>
               </div>
@@ -132,13 +314,8 @@ function App() {
         {/* Stats Section */}
         <section className="container py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { icon: Users, label: 'Active Students', value: '10,000+' },
-              { icon: BookOpen, label: 'Video Lectures', value: '5,000+' },
-              { icon: Target, label: 'Practice Problems', value: '50,000+' },
-              { icon: Award, label: 'Success Rate', value: '95%' },
-            ].map((stat, index) => (
-              <div key={index} className="text-center space-y-2">
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center space-y-2">
                 <stat.icon className="w-8 h-8 mx-auto text-primary" />
                 <p className="text-3xl font-bold">{stat.value}</p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
@@ -152,45 +329,19 @@ function App() {
         {/* Features Section */}
         <section id="features" className="container py-20">
           <div className="text-center space-y-4 mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold">Why Choose viitjee?</h3>
+            <h3 className="text-3xl md:text-4xl font-bold">
+              WHY CHOOSE VIIT JEE?
+            </h3>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Everything you need to excel in your JEE preparation journey
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: BookOpen,
-                title: 'Comprehensive Content',
-                description: 'Complete syllabus coverage for JEE Main and Advanced with detailed explanations and examples.',
-              },
-              {
-                icon: Target,
-                title: 'Targeted Practice',
-                description: 'Topic-wise and difficulty-level practice problems to strengthen your concepts.',
-              },
-              {
-                icon: TrendingUp,
-                title: 'Progress Tracking',
-                description: 'Monitor your performance with detailed analytics and personalized recommendations.',
-              },
-              {
-                icon: Users,
-                title: 'Expert Faculty',
-                description: 'Learn from experienced teachers with proven track records in JEE coaching.',
-              },
-              {
-                icon: Award,
-                title: 'Mock Tests',
-                description: 'Full-length mock tests simulating actual JEE exam patterns and difficulty.',
-              },
-              {
-                icon: Zap,
-                title: 'Doubt Resolution',
-                description: 'Quick doubt clearing sessions to ensure no concept is left unclear.',
-              },
-            ].map((feature, index) => (
-              <Card key={index} className="border-2 hover:border-primary transition-colors">
+            {features.map((feature) => (
+              <Card
+                key={feature.title}
+                className="border-2 hover:border-primary transition-colors"
+              >
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <feature.icon className="w-6 h-6 text-primary" />
@@ -214,28 +365,12 @@ function App() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                subject: 'Physics',
-                topics: 'Mechanics, Thermodynamics, Electromagnetism',
-                lessons: '150+ Lessons',
-              },
-              {
-                subject: 'Chemistry',
-                topics: 'Physical, Organic, Inorganic Chemistry',
-                lessons: '140+ Lessons',
-              },
-              {
-                subject: 'Mathematics',
-                topics: 'Calculus, Algebra, Coordinate Geometry',
-                lessons: '160+ Lessons',
-              },
-            ].map((course, index) => (
-              <Card key={index} className="overflow-hidden">
+            {courses.map((course, idx) => (
+              <Card key={course.subject} className="overflow-hidden">
                 <img
                   src={subjectHeaderImages[course.subject].path}
                   alt={subjectHeaderImages[course.subject].alt}
-                  className="w-full h-32 object-cover"
+                  className="w-full h-40 object-cover"
                 />
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
@@ -248,11 +383,18 @@ function App() {
                   </div>
                   <CardDescription className="space-y-2">
                     <p>{course.topics}</p>
-                    <p className="font-medium text-foreground">{course.lessons}</p>
+                    <p className="font-medium text-foreground">
+                      {course.lessons}
+                    </p>
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full" variant="outline">
+                  <Button
+                    className="w-full"
+                    variant="outline"
+                    onClick={() => setSelectedCourse(course.subject)}
+                    data-ocid={`courses.explore.button.${idx + 1}`}
+                  >
                     Explore Course
                   </Button>
                 </CardContent>
@@ -266,12 +408,20 @@ function App() {
         {/* About Section */}
         <section id="about" className="container py-20">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h3 className="text-3xl md:text-4xl font-bold">About viitjee</h3>
+            <h3 className="text-3xl md:text-4xl font-bold">ABOUT VIIT JEE</h3>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              viitjee is a comprehensive educational platform dedicated to helping students achieve their dreams of cracking JEE Main and Advanced. Founded by Venkatesh, our mission is to provide high-quality, accessible education that empowers students with the knowledge and confidence they need to succeed.
+              VIIT JEE is a comprehensive educational platform dedicated to
+              helping students achieve their dreams of cracking JEE Main and
+              Advanced. Founded by VENKATESH KOMIRISETTY, our mission is to
+              provide high-quality, accessible education that empowers students
+              with the knowledge and confidence they need to succeed.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              With a focus on conceptual clarity, rigorous practice, and personalized learning, we've helped thousands of students reach their goals. Our expert faculty, cutting-edge technology, and student-centric approach make us the preferred choice for JEE preparation.
+              With a focus on conceptual clarity, rigorous practice, and
+              personalized learning, we've helped thousands of students reach
+              their goals. Our expert faculty, cutting-edge technology, and
+              student-centric approach make us the preferred choice for JEE
+              preparation.
             </p>
           </div>
         </section>
@@ -284,13 +434,23 @@ function App() {
                 Ready to Start Your Journey?
               </CardTitle>
               <CardDescription className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
-                Join thousands of successful students who chose viitjee for their JEE preparation
+                Join thousands of successful students who chose VIIT JEE for
+                their JEE preparation
               </CardDescription>
               <div className="flex flex-wrap gap-4 justify-center pt-4">
-                <Button size="lg" variant="secondary">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  data-ocid="cta.get_started.button"
+                >
                   Get Started Now
                 </Button>
-                <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+                  data-ocid="cta.schedule_demo.button"
+                >
                   Schedule a Demo
                 </Button>
               </div>
@@ -305,14 +465,16 @@ function App() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <img 
-                  src="/assets/generated/viitjee-logo.dim_256x256.png" 
-                  alt="viitjee logo" 
-                  className="w-10 h-10 object-contain"
+                <img
+                  src="/assets/generated/viitjee-logo.dim_400x120.png"
+                  alt="Viit-Jee logo"
+                  className="h-8 w-auto object-contain"
                 />
                 <div>
-                  <h4 className="font-bold">viitjee</h4>
-                  <p className="text-xs text-muted-foreground">by Venkatesh</p>
+                  <h4 className="font-bold">VIIT JEE</h4>
+                  <p className="text-xs text-muted-foreground">
+                    BY VENKATESH KOMIRISETTY
+                  </p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -322,25 +484,67 @@ function App() {
             <div>
               <h5 className="font-semibold mb-4">Courses</h5>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Physics</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Chemistry</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Mathematics</a></li>
+                <li>
+                  <a
+                    href="#courses"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Physics
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#courses"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Chemistry
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#courses"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Mathematics
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold mb-4">Resources</h5>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Study Material</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Mock Tests</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Previous Papers</a></li>
+                <li>
+                  <a
+                    href="#features"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Study Material
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#features"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Mock Tests
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#features"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Previous Papers
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold mb-4">Contact</h5>
               <div className="space-y-2 text-sm text-muted-foreground">
                 <p>Get in touch with us:</p>
-                <a 
-                  href="mailto:viitjeetec@gmail.com" 
+                <a
+                  href="mailto:viitjeetec@gmail.com"
                   className="hover:text-foreground transition-colors flex items-center gap-2 font-medium"
                 >
                   <Mail className="w-4 h-4" />
@@ -351,11 +555,17 @@ function App() {
           </div>
           <Separator className="my-8" />
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} viitjee by Venkatesh. All rights reserved.</p>
+            <p>
+              &copy; {new Date().getFullYear()} VIIT JEE by Venkateshcopy;{" "}
+              {new Date().getFullYear()} VIIT JEE BY VENKATESHcopy;{" "}
+              {new Date().getFullYear()} VIIT JEE BY VENKATESH Komirisetty. All
+              rights reserved.
+            </p>
             <p className="flex items-center gap-1">
-              Built with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> using{' '}
+              Built with <Heart className="w-4 h-4 text-red-500 fill-red-500" />{" "}
+              using{" "}
               <a
-                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== 'undefined' ? window.location.hostname : 'viitjee')}`}
+                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "viitjee")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-foreground transition-colors underline"
@@ -366,6 +576,70 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Syllabus Dialog */}
+      <Dialog
+        open={!!selectedCourse}
+        onOpenChange={(open) => !open && setSelectedCourse(null)}
+      >
+        <DialogContent className="max-w-2xl" data-ocid="syllabus.dialog">
+          <DialogHeader>
+            <div
+              className={`rounded-lg p-4 mb-2 bg-gradient-to-r ${selectedCourse ? subjectColors[selectedCourse] : ""}`}
+            >
+              <DialogTitle className="text-2xl font-bold flex items-center gap-3">
+                {selectedCourse && (
+                  <img
+                    src={subjectIcons[selectedCourse]?.path}
+                    alt={selectedCourse}
+                    className="w-10 h-10 object-contain"
+                  />
+                )}
+                {selectedCourse} Syllabus
+              </DialogTitle>
+              <p className="text-sm text-muted-foreground mt-1">
+                Complete JEE Main & Advanced chapter list
+              </p>
+            </div>
+          </DialogHeader>
+          <ScrollArea className="max-h-[60vh]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-4">
+              {selectedChapters.map((chapter, index) => (
+                <div
+                  key={chapter}
+                  className="flex items-start gap-3 p-3 rounded-lg border bg-muted/30 hover:bg-muted/60 transition-colors"
+                >
+                  <div className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium leading-tight">
+                      {chapter}
+                    </p>
+                  </div>
+                  <CheckCircle2 className="flex-shrink-0 w-4 h-4 text-green-500 mt-0.5" />
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+          <div className="flex justify-between items-center pt-2 border-t">
+            <p className="text-sm text-muted-foreground">
+              {selectedChapters.length} chapters covered
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => setSelectedCourse(null)}
+              className="gap-2"
+              data-ocid="syllabus.close.button"
+            >
+              <X className="w-4 h-4" />
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
