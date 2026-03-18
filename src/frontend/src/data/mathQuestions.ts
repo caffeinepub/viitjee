@@ -1,7 +1,7 @@
 import type { Question } from "../utils/printPDF";
 export const mathQuestions: { chapterName: string; questions: Question[] }[] = [
   {
-    chapterName: "Sets and Relations",
+    chapterName: "Sets, Relations & Functions",
     questions: [
       {
         id: 1,
