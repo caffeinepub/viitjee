@@ -2106,6 +2106,22 @@ function App() {
                         >
                           DOWNLOAD LIMITS PDF - PART 2
                         </a>
+                        <a
+                          href="/assets/lim1-019d32ed-0854-765d-9184-51eabfd8c6ab.html"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-xs uppercase tracking-wide text-center block"
+                        >
+                          LIMITS QUIZ - PART 1
+                        </a>
+                        <a
+                          href="/assets/lim2-019d32ed-086e-7424-a26b-2d453cd5e761.html"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-xs uppercase tracking-wide text-center block"
+                        >
+                          LIMITS QUIZ - PART 2
+                        </a>
                       </div>
                     )}
                   </div>
