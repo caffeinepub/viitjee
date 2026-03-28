@@ -2,17 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Award,
   BookOpen,
+  Brain,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Heart,
   Mail,
+  RotateCcw,
   Target,
   TrendingUp,
+  Trophy,
   Users,
   X,
   Zap,
 } from "lucide-react";
 import { useState } from "react";
+import { InlineMath } from "react-katex";
+import { Badge } from "./components/ui/badge";
 import { Button } from "./components/ui/button";
 import {
   Card,
@@ -27,6 +34,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./components/ui/dialog";
+import { Progress } from "./components/ui/progress";
 import { ScrollArea } from "./components/ui/scroll-area";
 import { Separator } from "./components/ui/separator";
 import {
@@ -37,6 +45,23 @@ import {
 import { useActor } from "./hooks/useActor";
 import { downloadQuestionsPDF } from "./utils/printPDF";
 import type { Question } from "./utils/printPDF";
+
+function MathText({ text }: { text: string }) {
+  if (!text.includes("$")) return <span>{text}</span>;
+  const parts = text.split(/(\$[^$]+\$)/g);
+  return (
+    <span>
+      {parts.map((part, idx) => {
+        const key = `${idx}-${part.length}`;
+        if (part.startsWith("$") && part.endsWith("$")) {
+          const latex = part.slice(1, -1);
+          return <InlineMath key={key} math={latex} />;
+        }
+        return <span key={key}>{part}</span>;
+      })}
+    </span>
+  );
+}
 
 const stats = [
   { icon: Users, label: "Active Students", value: "10,000+" },
@@ -439,25 +464,25 @@ const theoryPoints: Record<string, Record<string, string[]>> = {
       "System of equations: consistent (unique/infinite solutions) or inconsistent (no solution)",
     ],
     "Limits, Continuity & Differentiability": [
-      "Standard limits: lim(x→0) sinx/x = 1; lim(x→∞)(1+1/x)ˣ = e",
-      "L'Hôpital's rule: if 0/0 or ∞/∞ form, differentiate numerator and denominator",
-      "Continuity at x=a: lim(x→a) f(x) = f(a) (limit equals function value)",
-      "Types of discontinuity: removable, jump, infinite",
-      "Differentiability implies continuity; converse not always true (e.g., |x| at 0)",
+      "$\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$; $\\lim_{x \\to \\infty}\\left(1+\\frac{1}{x}\\right)^x = e$",
+      "L'Hôpital's rule: if $\\frac{0}{0}$ or $\\frac{\\infty}{\\infty}$ form, differentiate numerator and denominator",
+      "Continuity at $x=a$: $\\lim_{x \\to a} f(x) = f(a)$",
+      "Differentiability implies continuity; converse not always true (e.g., $|x|$ at 0)",
+      "L'Hôpital: $\\lim_{x\\to a}\\frac{f(x)}{g(x)} = \\lim_{x\\to a}\\frac{f'(x)}{g'(x)}$",
     ],
     "Application of Derivatives": [
-      "Slope of tangent = f'(a); normal slope = −1/f'(a)",
-      "Increasing function: f'(x) > 0; decreasing: f'(x) < 0",
-      "Maxima/minima: f'(x) = 0 at critical points; use second derivative test",
-      "Rolle's theorem: f'(c) = 0 for some c in (a,b) if f(a) = f(b)",
-      "Mean value theorem: f'(c) = [f(b)−f(a)]/(b−a) for some c in (a,b)",
+      "Slope of tangent $= f'(a)$; normal slope $= -\\frac{1}{f'(a)}$",
+      "Increasing: $f'(x) > 0$; decreasing: $f'(x) < 0$",
+      "Maxima/minima: $f'(x) = 0$ at critical points; second derivative test",
+      "Rolle's theorem: $f'(c) = 0$ for some $c \\in (a,b)$ if $f(a) = f(b)$",
+      "MVT: $f'(c) = \\frac{f(b)-f(a)}{b-a}$ for some $c \\in (a,b)$",
     ],
     Integrals: [
-      "Standard integrals: ∫xⁿdx = xⁿ⁺¹/(n+1), ∫sinx dx = −cosx, ∫eˣdx = eˣ",
+      "$\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$; $\\int \\sin x\\, dx = -\\cos x + C$; $\\int e^x dx = e^x + C$",
       "Integration by substitution: replace variable to simplify integrand",
-      "Integration by parts: ∫u·dv = uv − ∫v·du (ILATE rule for choosing u)",
+      "Integration by parts: $\\int u\\,dv = uv - \\int v\\,du$ (ILATE rule)",
       "Partial fractions decompose rational functions for integration",
-      "Definite integral properties: ∫ₐᵇf(x)dx = −∫ᵦₐf(x)dx; area interpretation",
+      "Definite integral $\\int_a^b f(x)dx$ = area under curve from $a$ to $b$",
     ],
     "Differential Equations": [
       "Order = highest derivative; degree = power of highest derivative",
@@ -1196,6 +1221,270 @@ const subjectColors: Record<string, string> = {
   Mathematics: "from-purple-500/20 to-violet-500/20",
 };
 
+type SubjectKey = "MATHEMATICS" | "PHYSICS" | "CHEMISTRY";
+
+const subjectData: Record<
+  SubjectKey,
+  { chapterName: string; questions: Question[] }[]
+> = {
+  MATHEMATICS: mathQuestions,
+  PHYSICS: physicsQuestions,
+  CHEMISTRY: chemistryQuestions,
+};
+
+function PracticeSection() {
+  const [activeSubject, setActiveSubject] = useState<SubjectKey>("MATHEMATICS");
+  const [selectedChapterIdx, setSelectedChapterIdx] = useState(0);
+  const [currentQIdx, setCurrentQIdx] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
+
+  const chapters = subjectData[activeSubject];
+  const chapter = chapters[selectedChapterIdx];
+  const questions = chapter?.questions ?? [];
+  const currentQ = questions[currentQIdx];
+
+  const correctCount = questions.filter(
+    (q, i) => userAnswers[i] === q.answer,
+  ).length;
+  const answeredCount = Object.keys(userAnswers).length;
+  const progress =
+    questions.length > 0 ? (answeredCount / questions.length) * 100 : 0;
+
+  function handleSubjectChange(subject: SubjectKey) {
+    setActiveSubject(subject);
+    setSelectedChapterIdx(0);
+    setCurrentQIdx(0);
+    setUserAnswers({});
+  }
+
+  function handleChapterChange(idx: number) {
+    setSelectedChapterIdx(idx);
+    setCurrentQIdx(0);
+    setUserAnswers({});
+  }
+
+  function handleAnswer(option: string) {
+    if (userAnswers[currentQIdx] !== undefined) return;
+    setUserAnswers((prev) => ({ ...prev, [currentQIdx]: option }));
+  }
+
+  function handleReset() {
+    setCurrentQIdx(0);
+    setUserAnswers({});
+  }
+
+  const selectedAnswer = userAnswers[currentQIdx];
+  const isAnswered = selectedAnswer !== undefined;
+  const isCorrect = selectedAnswer === currentQ?.answer;
+
+  return (
+    <section id="practice" className="container py-20">
+      <div className="text-center mb-10 space-y-3">
+        <div className="flex items-center justify-center gap-3">
+          <Brain className="w-8 h-8 text-primary" />
+          <h3 className="text-3xl md:text-4xl font-bold">PRACTICE MCQs</h3>
+        </div>
+        <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+          SHARPEN YOUR SKILLS WITH TOPIC-WISE PRACTICE QUESTIONS
+        </p>
+      </div>
+
+      {/* Subject Tabs */}
+      <div
+        className="flex justify-center mb-6 gap-2 flex-wrap"
+        data-ocid="practice.tab"
+      >
+        {(["MATHEMATICS", "PHYSICS", "CHEMISTRY"] as SubjectKey[]).map(
+          (subj) => (
+            <Button
+              key={subj}
+              variant={activeSubject === subj ? "default" : "outline"}
+              onClick={() => handleSubjectChange(subj)}
+              className="font-bold tracking-wider"
+              data-ocid={`practice.${subj.toLowerCase()}.tab`}
+            >
+              {subj}
+            </Button>
+          ),
+        )}
+      </div>
+
+      {/* Chapter Selector */}
+      <div className="max-w-2xl mx-auto mb-8">
+        <label
+          htmlFor="chapter-select"
+          className="block text-sm font-bold mb-2 text-muted-foreground tracking-wider"
+        >
+          SELECT CHAPTER
+        </label>
+        <select
+          id="chapter-select"
+          className="w-full border border-border rounded-md p-3 bg-background text-foreground font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+          value={selectedChapterIdx}
+          onChange={(e) => handleChapterChange(Number(e.target.value))}
+          data-ocid="practice.chapter.select"
+        >
+          {chapters.map((ch, idx) => (
+            <option key={ch.chapterName} value={idx}>
+              {ch.chapterName.toUpperCase()}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Score & Progress */}
+      <div className="max-w-2xl mx-auto mb-6 space-y-3">
+        <div className="flex items-center justify-between text-sm font-semibold">
+          <span className="flex items-center gap-2 text-muted-foreground">
+            <Trophy className="w-4 h-4" />
+            SCORE: {correctCount} / {answeredCount} ANSWERED CORRECTLY
+          </span>
+          <Badge
+            variant={correctCount > answeredCount / 2 ? "default" : "secondary"}
+          >
+            {answeredCount === 0
+              ? "NOT STARTED"
+              : `${Math.round((correctCount / Math.max(answeredCount, 1)) * 100)}% CORRECT`}
+          </Badge>
+        </div>
+        <Progress
+          value={progress}
+          className="h-2"
+          data-ocid="practice.progress.loading_state"
+        />
+        <p className="text-xs text-muted-foreground text-right">
+          {answeredCount} OF {questions.length} QUESTIONS ATTEMPTED
+        </p>
+      </div>
+
+      {/* Question Card */}
+      {currentQ && (
+        <Card
+          className="max-w-2xl mx-auto shadow-md"
+          data-ocid="practice.question.card"
+        >
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <Badge
+                variant="outline"
+                className="font-bold text-xs tracking-wider"
+              >
+                QUESTION {currentQIdx + 1} OF {questions.length}
+              </Badge>
+              <Badge
+                variant="secondary"
+                className="font-bold text-xs tracking-wider"
+              >
+                {chapter.chapterName.toUpperCase()}
+              </Badge>
+            </div>
+            <CardTitle className="text-base md:text-lg font-semibold leading-snug pt-2">
+              <MathText text={currentQ.question} />
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="space-y-3">
+            {(["A", "B", "C", "D"] as const).map((opt) => {
+              const optText = currentQ.options[opt];
+              const isSelected = selectedAnswer === opt;
+              const isThisCorrect = opt === currentQ.answer;
+
+              let btnClass =
+                "w-full text-left p-3 rounded-lg border-2 font-medium transition-all text-sm";
+              if (!isAnswered) {
+                btnClass +=
+                  " border-border hover:border-primary hover:bg-primary/5 cursor-pointer";
+              } else if (isThisCorrect) {
+                btnClass +=
+                  " border-green-500 bg-green-500/10 text-green-700 dark:text-green-400";
+              } else if (isSelected && !isThisCorrect) {
+                btnClass +=
+                  " border-red-500 bg-red-500/10 text-red-700 dark:text-red-400";
+              } else {
+                btnClass += " border-border opacity-60";
+              }
+
+              return (
+                <button
+                  type="button"
+                  key={opt}
+                  className={btnClass}
+                  onClick={() => handleAnswer(opt)}
+                  disabled={isAnswered}
+                  data-ocid={`practice.option_${opt.toLowerCase()}.button`}
+                >
+                  <span className="font-bold mr-2">{opt}.</span>
+                  <MathText text={optText} />
+                  {isAnswered && isThisCorrect && (
+                    <span className="ml-2 text-green-600 font-bold">
+                      ✓ CORRECT
+                    </span>
+                  )}
+                  {isAnswered && isSelected && !isThisCorrect && (
+                    <span className="ml-2 text-red-600 font-bold">✗ WRONG</span>
+                  )}
+                </button>
+              );
+            })}
+
+            {isAnswered && (
+              <div
+                className={`mt-2 p-3 rounded-lg text-sm font-semibold ${isCorrect ? "bg-green-500/10 text-green-700 border border-green-500/30" : "bg-red-500/10 text-red-700 border border-red-500/30"}`}
+                data-ocid={
+                  isCorrect
+                    ? "practice.answer.success_state"
+                    : "practice.answer.error_state"
+                }
+              >
+                {isCorrect
+                  ? "✓ EXCELLENT! CORRECT ANSWER!"
+                  : `✗ INCORRECT. CORRECT ANSWER: ${currentQ.answer}. ${currentQ.options[currentQ.answer as keyof typeof currentQ.options]}`}
+              </div>
+            )}
+          </CardContent>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between p-4 border-t border-border">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentQIdx((p) => Math.max(0, p - 1))}
+              disabled={currentQIdx === 0}
+              data-ocid="practice.prev.button"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              PREVIOUS
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleReset}
+              data-ocid="practice.reset.button"
+            >
+              <RotateCcw className="w-4 h-4 mr-1" />
+              RESET
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                setCurrentQIdx((p) => Math.min(questions.length - 1, p + 1))
+              }
+              disabled={currentQIdx === questions.length - 1}
+              data-ocid="practice.next.button"
+            >
+              NEXT
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        </Card>
+      )}
+    </section>
+  );
+}
+
 function App() {
   const { actor, isFetching } = useActor();
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
@@ -1274,6 +1563,13 @@ function App() {
               data-ocid="nav.courses.link"
             >
               Courses
+            </a>
+            <a
+              href="#practice"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              data-ocid="nav.practice.link"
+            >
+              PRACTICE
             </a>
             <a
               href="#about"
@@ -1442,6 +1738,11 @@ function App() {
             ))}
           </div>
         </section>
+
+        <Separator />
+
+        {/* Practice Section */}
+        <PracticeSection />
 
         <Separator />
 
@@ -1739,7 +2040,7 @@ function App() {
                                   key={formula.slice(0, 30)}
                                   className="font-mono text-xs bg-orange-50 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300 px-2 py-0.5 rounded border border-orange-200 dark:border-orange-800"
                                 >
-                                  {formula}
+                                  <MathText text={formula} />
                                 </span>
                               ))}
                             </div>
@@ -1785,6 +2086,26 @@ function App() {
                         >
                           DOWNLOAD 100 QUESTIONS PDF
                         </button>
+                      </div>
+                    )}
+                    {chapter === "Limits, Continuity & Differentiability" && (
+                      <div className="px-4 pb-3 pt-2 border-t flex flex-col gap-2">
+                        <a
+                          href="/assets/uploads/lim1-019d32e5-6941-751f-916f-f46f2a9c045f-1.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded text-xs uppercase tracking-wide text-center block"
+                        >
+                          DOWNLOAD LIMITS PDF - PART 1
+                        </a>
+                        <a
+                          href="/assets/uploads/lim2-019d32e5-6da0-700d-b759-a22ee50a84a0-2.pdf"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded text-xs uppercase tracking-wide text-center block"
+                        >
+                          DOWNLOAD LIMITS PDF - PART 2
+                        </a>
                       </div>
                     )}
                   </div>
